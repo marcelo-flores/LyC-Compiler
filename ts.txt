@@ -1,0 +1,62 @@
+ID                              |	Nombre         |	Tipo                            |	Valor        
+
+A                               |	ID             |	                                |	0            
+
+B                               |	ID             |	                                |	0            
+
+C                               |	ID             |	                                |	0            
+
+D                               |	ID             |	                                |	0            
+
+E                               |	ID             |	                                |	0            
+
+H                               |	ID             |	                                |	0            
+
+R                               |	ID             |	                                |	0            
+
+G                               |	ID             |	                                |	0            
+
+F                               |	ID             |	                                |	0            
+
+W                               |	ID             |	                                |	0            
+
+fib1                            |	ID             |	                                |	0            
+
+fib2                            |	ID             |	                                |	0            
+
+fib3                            |	ID             |	                                |	0            
+
+variable1                       |	ID             |	                                |	0            
+
+5                               |	CTE_E          |	                                |	0            
+
+-10                             |	CTE_E          |	                                |	0            
+
+2.3                             |	CTE_R          |	                                |	0            
+
+1                               |	CTE_E          |	                                |	0            
+
+R2                              |	ID             |	                                |	0            
+
+-.4                             |	CTE_R          |	                                |	0            
+
+Z                               |	ID             |	                                |	0            
+
+4                               |	CTE_E          |	                                |	0            
+
+9                               |	CTE_E          |	                                |	0            
+
+3                               |	CTE_E          |	                                |	0            
+
+"HOLA"                          |	CTE_S          |	                                |	6            
+
+"HOLA TODO BIEN!"               |	CTE_S          |	                                |	17           
+
+12                              |	CTE_E          |	                                |	0            
+
+6                               |	CTE_E          |	                                |	0            
+
+2                               |	CTE_E          |	                                |	0            
+
+"chau"                          |	CTE_S          |	                                |	6            
+
