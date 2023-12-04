@@ -11,9 +11,12 @@ struct struct_tablaSimbolos{
 	int longitud;
 };
 
-int guardar_TS( char*, char*);
+int guardar_TS(char*, char*, char*);
 int crear_TS();
-int contarChar( char* a );
+void actualizar_tipo_TS(char *,char *);
+struct struct_tablaSimbolos obtener_TS(char*);
+int es_constante(char *);
+int contar_char(char*);
 int puntero_array = 0;
 
 char* str_cpy(char* destino, const char* origen);
@@ -26,9 +29,10 @@ FILE  *yyin;
 char *yyltext;
 
 int yyerror(void);
-int eval_int( char *n );
-int eval_float( char *n );
-int eval_string( char *s );
+int eval_int(char *n);
+int eval_float(char *n);
+int eval_string(char *s);
+
 
 %}
 
@@ -82,6 +86,8 @@ READ			"read"
 WRITE			"write"
 INIT			"init"
 ID				{LETRA}({LETRA}|{DIGITO}|_)*
+FIRST_INDEX_OF  "FirstIndexOf"
+CONCATENAR_CON_RECORTE "ConcatenarConRecorte"
 
 %%
 
@@ -99,11 +105,13 @@ ID				{LETRA}({LETRA}|{DIGITO}|_)*
 {READ}			{yylval.cadena = strdup(yytext); return READ; }
 {WRITE}			{yylval.cadena = strdup(yytext); return WRITE; }
 {INIT}			{yylval.cadena = strdup(yytext); return INIT; }
+{FIRST_INDEX_OF} {yylval.cadena = strdup(yytext); return FIRST_INDEX_OF; }
+{CONCATENAR_CON_RECORTE} {yylval.cadena = strdup(yytext); return CONCATENAR_CON_RECORTE; }
 
-{CTE_E}			{yylval.cadena = strdup(yytext); guardar_TS("CTE_E", yytext); eval_int(yytext); return CTE_E; }
-{CTE_R}			{yylval.cadena = strdup(yytext); guardar_TS("CTE_R", yytext); eval_float(yytext); return CTE_R; }
+{CTE_E}			{yylval.cadena = strdup(yytext); guardar_TS("CTE_E", yytext, yytext); eval_int(yytext); return CTE_E; }
+{CTE_R}			{yylval.cadena = strdup(yytext); guardar_TS("CTE_R", yytext, yytext); eval_float(yytext); return CTE_R; }
 
-{CTE_S} 		{yylval.cadena = strdup(yytext); guardar_TS("CTE_S", yytext); eval_string(yytext); return CTE_S; }
+{CTE_S} 		{yylval.cadena = strdup(yytext); guardar_TS("CTE_S", yytext, yytext); eval_string(yytext); return CTE_S; }
 {COMENTARIO}
 {DP}			{yylval.cadena = strdup(yytext); return DP; }
 {PC}			{yylval.cadena = strdup(yytext); return PC; }
@@ -128,22 +136,25 @@ ID				{LETRA}({LETRA}|{DIGITO}|_)*
 {CO_MAYI}		{yylval.cadena = strdup(yytext); return CO_MAYI;}
 {CO_MAY}		{yylval.cadena = strdup(yytext); return CO_MAY; }
 
-{ID}			{yylval.cadena = strdup(yytext); guardar_TS("ID", yytext); return ID; }
+{ID}			{yylval.cadena = strdup(yytext); guardar_TS("ID", yytext, ""); return ID; }
+
 
 "\n"
 "\t"
 "\n\t"
 " "
 "\r\n"
-"@"			 { printf( "\nERROR LEXICO : Caracter no reconocido: %s\n", yytext ); exit (0); return; }
-.			 { printf( "\nERROR LEXICO : Caracter no reconocido: %s\n", yytext ); exit (0); return; }
+"@"			 { printf( "\nERROR LEXICO : Caracter no reconocido: %s\n", yytext ); exit (0); return 0; }
+.			 { printf( "\nERROR LEXICO : Caracter no reconocido: %s\n", yytext ); exit (0); return 0; }
+
 
 %%
+
 
 int eval_int( char* n ){
 	int entero = atoi(n);
 	if( entero  < -65535 || entero > 65535 ){
-		printf( "\nERROR LEXICO : Rango entero Invalido (16 bits): %s\n", yytext ); 
+		printf( "\nERROR LEXICO : Rango entero Invalido (16 bits): %s\n", yytext );
 		exit (0);
 	}
 	return 0;
@@ -168,44 +179,47 @@ int eval_string( char* s ){
 	return 0;
 }
 
-int guardar_TS(char* tipo, char* nombre){
+int guardar_TS (char* tipo, char* nombre, char* valor) {
 	int i;
 	int retornar;
 	char *buffer;
-	for(i = 0; i < puntero_array; i++){
+
+	for(i = 0; i < puntero_array; i++) {
 		if(str_cmp(tablaSimbolos[i].nombre, nombre) == 0){
 			return i;
 		}
 	}
-	str_cpy(tablaSimbolos[puntero_array].tipo, tipo);
+
 	str_cpy(tablaSimbolos[puntero_array].nombre, nombre);
-	str_cpy(tablaSimbolos[puntero_array].valor, "");
-	if(tipo == "CTE_S"){
+	str_cpy(tablaSimbolos[puntero_array].tipo, tipo);
+	str_cpy(tablaSimbolos[puntero_array].valor, valor);
+
+	if(str_cmp(tipo, "CTE_S")) {
 		int longitud = strlen(nombre);
 		tablaSimbolos[puntero_array].longitud = longitud;
 	}
+
 	retornar = puntero_array;
 	puntero_array++;
+
 	return retornar;
 }
 
-int crear_TS(){
+int crear_TS() {
 	FILE *pf;
 	int i;
-	pf = fopen("ts.txt","w");
+	pf = fopen("ts.txt","w+");
 
 	if (!pf){
 		return 0;
 	}
 
-	fprintf(pf, "%-32s|\t%-15s|\t%-32s|\t%-13s\n\n","ID", "Nombre","Tipo","Valor","Longitud");
+	fprintf(pf, "%-32s|\t%-15s|\t%-32s|\t%-13s\n\n", "Nombre","Tipo","Valor","Longitud");
 	for (i = 0; i < puntero_array; i++){
-		if (str_cmp(tablaSimbolos[i].tipo, "ID") == 0 || str_cmp(tablaSimbolos[i].tipo, "CTE_E") == 0 ||
-			str_cmp(tablaSimbolos[i].tipo, "CTE_R") == 0 || str_cmp(tablaSimbolos[i].tipo, "CTE_S") == 0){
+		if (es_constante(tablaSimbolos[i].tipo)){
 			fprintf(pf, "%-32s|\t%-15s|\t%-32s|\t%-13d\n\n", tablaSimbolos[i].nombre, tablaSimbolos[i].tipo, tablaSimbolos[i].valor, tablaSimbolos[i].longitud);
-		}
-		else{
-			fprintf(pf, "_%-32s|\t%-15s|\t%-32s|\t%-13d\n\n",tablaSimbolos[i].nombre, tablaSimbolos[i].tipo, tablaSimbolos[i].valor, tablaSimbolos[i].longitud);
+		} else {
+			fprintf(pf, "_%-32s|\t%-15s|\t%-32s|\t%-13d\n\n", tablaSimbolos[i].nombre, tablaSimbolos[i].tipo, tablaSimbolos[i].valor, tablaSimbolos[i].longitud);
 		}
 	}
 	fclose(pf);
@@ -213,15 +227,45 @@ int crear_TS(){
 	return 1;
 }
 
-char* str_cpy(char* destino, const char* origen){
+struct struct_tablaSimbolos obtener_TS(char* nombre) {
+    int i;
+	struct struct_tablaSimbolos dato;
+
+	for(i = 0; i < puntero_array; i++) {
+		if(str_cmp(tablaSimbolos[i].nombre, nombre) == 0) {
+			return tablaSimbolos[i];
+		}
+	}
+
+    return dato;
+}
+
+void actualizar_tipo_TS(char *nombre,char *tipo) {
+	int i;
+
+	for(i = 0; i < puntero_array; i++) {
+		if(str_cmp(tablaSimbolos[i].nombre, nombre) == 0) {
+			str_cpy(tablaSimbolos[i].tipo, tipo);
+		}
+	}
+}
+
+int es_constante(char *tipo) {
+	if (str_cmp(tipo, "Int") == 0 || str_cmp(tipo, "Float") == 0 || str_cmp(tipo, "String") == 0) {
+		return 1;
+	}
+
+    return 0;
+}
+
+char* str_cpy(char* destino, const char* origen) {
     if (destino == NULL) {
         return NULL;
     }
 
     char *ptr = destino;
 
-    while (*origen != '\0')
-    {
+    while (*origen != '\0') {
         *destino = *origen;
         destino++;
         origen++;
@@ -232,24 +276,28 @@ char* str_cpy(char* destino, const char* origen){
     return ptr;
 }
 
-int str_cmp(const char * str1, const char * str2){
+int str_cmp(const char * str1, const char * str2) {
 	while (*str1 == *str2) {
 		if (*str1 == '\0' || *str2 == '\0')
 			break;
 		str1++;
 		str2++;
 	}
+
 	if (*str1 == '\0' && *str2 == '\0')
       return 0;
    	else
       return -1;
 }
 
-int contarChar( char* a ){
+int contar_char(char* a) {
 	int i, cont = 0;
-	for( i = 0 ; i < 32 ; i++ ){
-		if( a[i] != '\n' )
+
+	for(i = 0 ; i < 32 ; i++) {
+		if( a[i] != '\n' ) {
 			cont++;
+		}
 	}
+
 	return cont;
 }

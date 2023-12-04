@@ -3,13 +3,14 @@ program
 *-ZONA DE DECLARACION DE VARIABLES-*
 init
 {
-	A, B, C, D, E: Int
-	H, R: Float
+	A, B, C, D, Z, RE, VAR: Int
+	H, E, R2: Float
+	*-VERIFICACION TIPOS-*
+	*-W : Int-*
 	G, F, W: String
-	fib1, fib2, fib3: Int
+	*- VARIABLE DECLARADA PERO NO USADA-*
 	variable1: Int
 }
-
 
 *-ASIGNACIONES-*
 A = 5
@@ -19,60 +20,41 @@ B = -10
 E = A * 2.3 + 1
 H = 2.3
 R2 = -.4
+G = "HOLA"
 
 *-EXPRESIONES-*
 
 Z = 5 * ( A + B )
 
 *-IF-*
-if( A < 4 & B > 9 )
-{
+if( A < 4 & B > 9 ) {
  	D = 5
 }
 
 
 *-IF ELSE-*
-if(A == 4 || B != 9)
-{
- 	if ( A == 4 )
-	 
-	{
+if(A == 4 || B != 9) {
+ 	if (A == 4) {
 		D=5
-	}
-	
-}
-else
-{
-	if ( not A > 3 )
-	
-	{
+	}	
+} else {
+	if ( not A > 3 ) {
 		D=4
-	}
-	else
-	{
+	} else {
 		C=3
 	}
-	
 }
 
-
-G = "HOLA"
-F = "HOLA TODO BIEN!"
-
-E = 12
 
 *-CICLO-*
-ciclo(E > B)
-{
-	E = E - 1
+ciclo(E > B) {
+	E = E - 1.1
 }
 
-write(A)
-
-*-FUNCION FIB-*
-fib1 = FIB(6)
-fib2 = A + B * FIB(2)
-
+ciclo( not A == B )
+{
+	A = 1
+}
 
 
 *-ERRORES DEL LEXICO-*
@@ -82,6 +64,14 @@ fib2 = A + B * FIB(2)
 *-W := "0123456789012345678901234356789"-*
 *-@-*
 *-FIN ERRORES LEXICO-*
+
+*-VERIFICACION TIPOS-*
+*-W = 2.3-*
+
+*- VARIABLE USADA PERO NO DECLARADA -*
+*-HH = 4-*
+
+RE = FirstIndexOf(a; [1,b,2,-5,z,C])
 
 read(F)
 write(F)

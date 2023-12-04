@@ -1,62 +1,62 @@
-ID                              |	Nombre         |	Tipo                            |	Valor        
+Nombre                          |	Tipo           |	Valor                           |	Longitud     
 
-A                               |	ID             |	                                |	0            
+A                               |	Int            |	                                |	1            
 
-B                               |	ID             |	                                |	0            
+B                               |	Int            |	                                |	1            
 
-C                               |	ID             |	                                |	0            
+C                               |	Int            |	                                |	1            
 
-D                               |	ID             |	                                |	0            
+D                               |	Int            |	                                |	1            
 
-E                               |	ID             |	                                |	0            
+Z                               |	Int            |	                                |	1            
 
-H                               |	ID             |	                                |	0            
+RE                              |	Int            |	                                |	2            
 
-R                               |	ID             |	                                |	0            
+VAR                             |	Int            |	                                |	3            
 
-G                               |	ID             |	                                |	0            
+H                               |	Float          |	                                |	1            
 
-F                               |	ID             |	                                |	0            
+E                               |	Float          |	                                |	1            
 
-W                               |	ID             |	                                |	0            
+R2                              |	Float          |	                                |	2            
 
-fib1                            |	ID             |	                                |	0            
+G                               |	String         |	                                |	1            
 
-fib2                            |	ID             |	                                |	0            
+F                               |	String         |	                                |	1            
 
-fib3                            |	ID             |	                                |	0            
+W                               |	String         |	                                |	1            
 
-variable1                       |	ID             |	                                |	0            
+variable1                       |	Int            |	                                |	9            
 
-5                               |	CTE_E          |	                                |	0            
+5                               |	Int            |	5                               |	1            
 
--10                             |	CTE_E          |	                                |	0            
+-10                             |	Int            |	-10                             |	3            
 
-2.3                             |	CTE_R          |	                                |	0            
+2.3                             |	Float          |	2.3                             |	3            
 
-1                               |	CTE_E          |	                                |	0            
+1                               |	Int            |	1                               |	1            
 
-R2                              |	ID             |	                                |	0            
+-.4                             |	Float          |	-.4                             |	3            
 
--.4                             |	CTE_R          |	                                |	0            
+"HOLA"                          |	String         |	"HOLA"                          |	0            
 
-Z                               |	ID             |	                                |	0            
+4                               |	Int            |	4                               |	1            
 
-4                               |	CTE_E          |	                                |	0            
+9                               |	Int            |	9                               |	1            
 
-9                               |	CTE_E          |	                                |	0            
+3                               |	Int            |	3                               |	1            
 
-3                               |	CTE_E          |	                                |	0            
+1.1                             |	Float          |	1.1                             |	3            
 
-"HOLA"                          |	CTE_S          |	                                |	6            
+_a                               |	ID             |	                                |	1            
 
-"HOLA TODO BIEN!"               |	CTE_S          |	                                |	17           
+_b                               |	ID             |	                                |	1            
 
-12                              |	CTE_E          |	                                |	0            
+2                               |	Int            |	2                               |	1            
 
-6                               |	CTE_E          |	                                |	0            
+-5                              |	Int            |	-5                              |	2            
 
-2                               |	CTE_E          |	                                |	0            
+_z                               |	ID             |	                                |	1            
 
-"chau"                          |	CTE_S          |	                                |	6            
+"chau"                          |	String         |	"chau"                          |	0            
 
