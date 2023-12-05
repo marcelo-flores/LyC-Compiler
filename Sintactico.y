@@ -100,6 +100,7 @@ char *comp;
 char *notcomp;
 int tipo_validar;
 
+int indice_first = 0;
 %}
 
 %union
@@ -332,12 +333,12 @@ write:
 																		 lista_inout[indice_inout].tipo = copiar("Float"); actualizar_tipo_TS(lista_inout[indice_inout].nombre, lista_inout[indice_inout].tipo); indice_inout++; }
 		;
 
-firstIndexOf: FIRST_INDEX_OF PARA expresiones PARC ;
+firstIndexOf: FIRST_INDEX_OF { printf("R57: firsIndexOf -> FIRST_INDEX_OF \n"); insertar_polaca($1); insertar_polaca("@pos"); insertar_polaca("="); }  PARA expresiones PARC
 
-expresiones: ID PC CORA expr CORC ;
+expresiones: ID { printf("R58: firsIndexOf -> FIRST_INDEX_OF \n"); insertar_polaca($1); insertar_polaca("@piv"); insertar_polaca("="); } PC CORA expr CORC { insertar_polaca("@pos"); insertar_polaca($1); insertar_polaca("="); }
 
-expr: factor
-	  |expr COMA factor;
+expr: factor { printf("R59: expr -> factor \n"); indice_first = 1; insertar_polaca("@piv"); insertar_polaca("CMP"); insertar_polaca("BNE"); insertar_polaca(convertir(indice+6)); insertar_polaca(convertir(indice_first)); insertar_polaca("@pos"); insertar_polaca("="); }
+	  | expr COMA factor { printf("R60: expr -> expr COMA factor \n"); indice_first = indice_first + 1; insertar_polaca("@piv"); insertar_polaca("CMP"); insertar_polaca("BNE"); insertar_polaca(convertir(indice+6)); insertar_polaca(convertir(indice_first)); insertar_polaca("@pos"); insertar_polaca("=");}
 
 concatenarConRecorte: CONCATENAR_CON_RECORTE PARA expr PARC;
 
